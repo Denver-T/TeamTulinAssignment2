@@ -11,10 +11,10 @@ package utilities;
     /**
      * Creates a new empty queue.
      * <p>POST: Queue is empty.</p>
-     * 
+     *  
      * @return a new empty queue
      */
-    void newQueue();
+    T newQueue();
     
     /**
      * Adds an element to the back of the queue.
@@ -35,7 +35,7 @@ package utilities;
      * @return the element at the front of the queue.
      * @throws IllegalStateException if the queue is empty
      */
-    void dequeue();
+    T dequeue();
     
     /**
      * Returns the front of the queue without removing it.
@@ -44,5 +44,5 @@ package utilities;
      * @return the element at the front of the queue.
      * @throws IllegalStateException if the queue is empty
      */
-    void peek();
+    T peek();
  }
