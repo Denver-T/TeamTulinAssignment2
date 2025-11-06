@@ -45,6 +45,10 @@ package utilities;
      * @throws IllegalStateException if the queue is empty
      */
     T peek();
+
+
+
+  
    /**
     *additional Queue reqirements
     *ayush sainju
