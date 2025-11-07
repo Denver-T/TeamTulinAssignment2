@@ -47,13 +47,13 @@ package utilities;
     T peek();
 
 
+   T peek();
 
-  
-   /**
-    *additional Queue reqirements
-    *ayush sainju
-   */
-     boolean isEmpty();
+    /**
+     * additional Queue requirements
+     * ayush sainju
+     */
+    boolean isEmpty();
 
     /**
      * Returns true if the queue has no room for more elements.
@@ -75,6 +75,11 @@ package utilities;
      */
     void clear();
 
- }
+}
+
+
+
+ 
+
 
 
