@@ -45,4 +45,41 @@ package utilities;
      * @throws IllegalStateException if the queue is empty
      */
     T peek();
- }
+
+
+   T peek();
+
+    /**
+     * additional Queue requirements
+     * ayush sainju
+     */
+    boolean isEmpty();
+
+    /**
+     * Returns true if the queue has no room for more elements.
+     * 
+     * @return true if full, false otherwise
+     */
+    boolean isFull();
+
+    /**
+     * Returns the number of elements currently in the queue.
+     * 
+     * @return the size of the queue
+     */
+    int size();
+
+    /**
+     * Removes all elements from the queue.
+     * <p>POST: Queue is empty.</p>
+     */
+    void clear();
+
+}
+
+
+
+ 
+
+
+
