@@ -1,85 +1,135 @@
 package utilities;
+
+import exceptions.EmptyQueueException;
+import java.io.*;
+
 /**
- * 
- * @author Jared Gutierrez
- * @version 1.0
- * @since 2025-11-04
+ * This is the professional Queue Interface for Object-Oriented Programming 3
+ * (CRPG 304) at the SAIT Polytechnic. This Queue embodies all the standard
+ * Queue operations, and includes several helper methods that will give the data
+ * structure more flexibility and use.
  */
+public interface QueueADT<E>
+{
+	/**
+	 * Enqueue will place the added item at the last position in the queue. This
+	 * method will not allow <code>null</code> values to be added to the Queue.
+	 * 
+	 * @param toAdd the item to be added to the Queue.
+	 * @throws NullPointerException raised when a <code>null</code> object is placed
+	 *                              in the Queue.
+	 */
+	public void enqueue( E toAdd ) throws NullPointerException;
 
- public interface QueueADT<T> {
+	/**
+	 * Dequeue will remove the first item that was placed in the Queue.
+	 * 
+	 * @return the first item in the Queue.
+	 * @throws EmptyQueueException raised when the queue's length is zero (0).
+	 */
+	public E dequeue() throws EmptyQueueException;
 
-    /**
-     * Creates a new empty queue.
-     * <p>POST: Queue is empty.</p>
-     *  
-     * @return a new empty queue
-     */
-    T newQueue();
-    
-    /**
-     * Adds an element to the back of the queue.
-     * <p>PRE: {@code element} is not null.</p>
-     * <p>POST: The element is added to the back of the queue.</p>
-     * 
-     * @throws IllegalArgumentException if {@code element} is null
-     * @throws IllegalStateException if the queue is full
-     * @param element the item to be added to the back of the queue
-     */
-    void enqueue(Object element);
-    
-    /**
-     * Removes and returns the front element of the queue.
-     * <p>PRE: The queue is not empty.</p>
-     * <p>PROST: The front element is removed and returned.</p>
-     * 
-     * @return the element at the front of the queue.
-     * @throws IllegalStateException if the queue is empty
-     */
-    T dequeue();
-    
-    /**
-     * Returns the front of the queue without removing it.
-     * <p>PRE: The queue is not empty.</p>
-     * 
-     * @return the element at the front of the queue.
-     * @throws IllegalStateException if the queue is empty
-     */
-    T peek();
+	/**
+	 * Peek provides a reference to the first item in the queue without removing
+	 * from the queue.
+	 * 
+	 * @return the first item in the queue.
+	 * @throws EmptyQueueException raised when the queue's length is zero (0).
+	 */
+	public E peek() throws EmptyQueueException;
+	
+	/**
+	 * dequeueAll removes all items in the queue.
+	 */
+	public void dequeueAll();
 
+	/**
+	 * Returns <code>true</code> when the queue contains no items.
+	 * 
+	 * @return <code>true</code> when queue length is zero (0).
+	 */
+	public boolean isEmpty();
+	
+	/**
+	 * Returns true if this list contains the specified element. More formally,
+	 * returns true if and only if this list contains at least one element e
+	 * such that (o==null ? e==null : o.equals(e)).
+	 * 
+	 * @param toFind
+	 *            element whose presence in this list is to be tested.
+	 * @return true if this list contains the specified element.
+	 * @throws NullPointerException
+	 *             if the specified element is null and this list does not
+	 *             support null elements.
+	 */
+	public boolean contains( E toFind ) throws NullPointerException;
 
-   T peek();
+	/**
+	 * Returns the 1-based position where an object is on this queue. If the
+	 * object o occurs as an item in this queue, this method returns the
+	 * distance from the front of the queue of the occurrence nearest the front of
+	 * the queue; the first item on the stack is considered to be at distance
+	 * 1. The equals method is used to compare o to the items in this queue.
+	 * 
+	 * @param toFind
+	 *            the desired object.
+	 * @return the 1-based position from the top of the queue where the object
+	 *         is located; the return value -1 indicates that the object is not
+	 *         on the queue.
+	 */
+	public int search( E toFind );
 
-    /**
-     * additional Queue requirements
-     * ayush sainju
-     */
-    boolean isEmpty();
+	/**
+	 * Returns an iterator over the elements in this queue in proper sequence.
+	 * 
+	 * @return an iterator over the elements in this queue in proper sequence.
+	 */
+	public Iterator<E> iterator();
 
-    /**
-     * Returns true if the queue has no room for more elements.
-     * 
-     * @return true if full, false otherwise
-     */
-    boolean isFull();
+	/**
+	 * Used to compare two Queue ADT's. To be equal two queues must contain equal
+	 * items appearing in the same order.
+	 * 
+	 * @param that the Queue ADT to be compared to this queue.
+	 * @return <code>true</code> if the queues are equal.
+	 */
+	public boolean equals( QueueADT<E> that );
 
-    /**
-     * Returns the number of elements currently in the queue.
-     * 
-     * @return the size of the queue
-     */
-    int size();
+	/**
+	 * Returns an array containing all of the elements in this list in proper
+	 * sequence. Obeys the general contract of the Collection.toArray method.
+	 * 
+	 * @return an array containing all of the elements in this list in proper
+	 *         sequence.
+	 */
+	public Object[] toArray();
 
-    /**
-     * Removes all elements from the queue.
-     * <p>POST: Queue is empty.</p>
-     */
-    void clear();
+	/**
+	 * Returns an array containing all of the elements in this list in proper
+	 * sequence; the runtime type of the returned array is that of the specified
+	 * array. Obeys the general contract of the Collection.toArray(Object[]) method.
+	 * 
+	 * @param toHold the array into which the elements of this queue are to be
+	 *               stored, if it is big enough; otherwise, a new array of the same
+	 *               runtime type is allocated for this purpose.
+	 * @return an array containing the elements of this queue.
+	 * @throws NullPointerException if the specified array is null.
+	 */
+	public E[] toArray( E[] holder ) throws NullPointerException;
 
+	/**
+	 * Returns true if the number of items in the queue equals the
+	 * length. This operation is only implement when a fixed length queue is
+	 * required.
+	 * 
+	 * @return <code>true</code> if queue is at capacity.
+	 */
+	public boolean isFull();
+
+	/**
+	 * Returns the length of the current queue as an integer value.
+	 * 
+	 * @return the current size to the queue as an integer.
+	 */
+	public int size();
 }
-
-
-
- 
-
-
-
