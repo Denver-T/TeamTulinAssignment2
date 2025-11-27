@@ -8,7 +8,7 @@ import exceptions.EmptyQueueException;
  * @author Jared Gutierrez
  * 
  * Queue implementation using MyDLL as the underlying data structure.
- * Classic FIFO behavior - first one in is the first one out.
+ * Classic FIFO behavior - first in first out.
  * 
  * @param <E> the type of element stored in this queue
  */

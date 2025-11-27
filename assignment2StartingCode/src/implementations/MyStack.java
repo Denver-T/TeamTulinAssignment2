@@ -121,14 +121,12 @@ public class MyStack<E> implements StackADT<E>
 	@Override
 	public Iterator<E> iterator()
 	{
-		// TODO Auto-generated method stub
 		return list.iterator();
 	}
 
 	@Override
 	public boolean equals(StackADT<E> that)
 	{
-		// TODO Auto-generated method stub
 //		MyArrayList<E> compareList = new MyArrayList<E>();
 		if(that.size() != list.size()) {
 			return false;
@@ -150,7 +148,6 @@ public class MyStack<E> implements StackADT<E>
 	@Override
 	public int size()
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
@@ -158,7 +155,6 @@ public class MyStack<E> implements StackADT<E>
 	public boolean stackOverflow()
 	{
 		int items = 0;
-		// TODO Auto-generated method stub
 		for(int i = 0; i>list.size();i++) {
 			items++;
 		}

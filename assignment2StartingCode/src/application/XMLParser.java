@@ -1,6 +1,6 @@
-package implementations;
+package application;
 
-import utilities.Iterator;
+import exceptions.EmptyQueueException;
 import implementations.MyStack;
 import implementations.MyQueue;
 
@@ -144,7 +144,7 @@ public class XMLParser {
     /**
      * Prints all errors that were recorded *in the order encountered*.
      */
-    public void printErrors() {
+    public void printErrors() throws EmptyQueueException {
         if (errorQueue.isEmpty()) {
             System.out.println("XML is well-formed! No errors found.");
             return;
@@ -153,6 +153,28 @@ public class XMLParser {
         System.out.println("XML Errors:");
         while (!errorQueue.isEmpty()) {
             System.out.println(errorQueue.dequeue());
+        }
+    }
+    
+    /**
+     * Main method to run the XML parser from the command line.
+     * Usage: java application.XMLParser <xmlfile>
+     * 
+     * @param args Command line arguments - expects XML filename
+     */
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java application.XMLParser <xmlfile>");
+            return;
+        }
+        
+        XMLParser parser = new XMLParser();
+        parser.parseFile(args[0]);
+        
+        try {
+            parser.printErrors();
+        } catch (EmptyQueueException e) {
+            System.err.println("Error printing results: " + e.getMessage());
         }
     }
 }
