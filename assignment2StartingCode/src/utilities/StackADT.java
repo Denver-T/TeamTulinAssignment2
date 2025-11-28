@@ -1,7 +1,6 @@
 package utilities;
 
 import java.util.*;
-import java.io.*;
 
 /**
  * This is the professional Stack Interface for Object-Oriented Programming 3

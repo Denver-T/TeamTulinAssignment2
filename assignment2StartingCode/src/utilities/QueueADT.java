@@ -1,7 +1,6 @@
 package utilities;
 
 import exceptions.EmptyQueueException;
-import java.io.*;
 
 /**
  * This is the professional Queue Interface for Object-Oriented Programming 3
