@@ -48,7 +48,7 @@ public class XMLParser {
     }
 
     /**
-     * Examines each line for XML tags and applies the
+     * Examines each line for XML tags and applies the rules.
      * @param line The current line of XML text.
      * @param lineNumber The current line number.
      */
@@ -65,6 +65,8 @@ public class XMLParser {
         // Extract every tag inside the line
         int start = 0;
 
+        int lastTagEnd = -1;        // *** Added by Ayush — track last closing '>' ***
+
         while ((start = line.indexOf('<', start)) != -1) {
             int end = line.indexOf('>', start);
 
@@ -73,10 +75,29 @@ public class XMLParser {
                 return;
             }
 
+            // *** Added by Ayush — check sub-phrase between tags ***
+            if (lastTagEnd != -1 && start > lastTagEnd + 1) {
+                String between = line.substring(lastTagEnd + 1, start).trim();
+                if (between.contains("<") || between.contains(">")) {
+                    errorQueue.enqueue("Line " + lineNumber +
+                            ": Sub-phrase is not well constructed between matching tags.");
+                }
+            }
+
             String tag = line.substring(start + 1, end).trim();
             classifyTag(tag, lineNumber);
 
+            lastTagEnd = end;       // *** Added by Ayush — update lastTagEnd ***
             start = end + 1;
+        }
+
+        // *** Added by Ayush — check tail text after last tag ***
+        if (lastTagEnd != -1 && lastTagEnd < line.length() - 1) {
+            String tail = line.substring(lastTagEnd + 1).trim();
+            if (tail.contains("<") || tail.contains(">")) {
+                errorQueue.enqueue("Line " + lineNumber +
+                        ": Sub-phrase is not well constructed between matching tags.");
+            }
         }
     }
 
@@ -87,9 +108,15 @@ public class XMLParser {
      */
     private void classifyTag(String tag, int lineNumber) {
 
-        // Self-closing tag
+        // *** Added by Ayush — improved self-closing tag handling ***
         if (tag.endsWith("/")) {
-            return; // requires no stack tracking
+            String inner = tag.substring(0, tag.length() - 1).trim();
+            String tagName = extractTagName(inner);
+
+            if (tagName == null || tagName.isEmpty()) {
+                errorQueue.enqueue("Line " + lineNumber + ": Self-closing tag is missing a name.");
+            }
+            return; // valid self-closing
         }
 
         // Closing tag
@@ -104,7 +131,6 @@ public class XMLParser {
 
             String top = tagStack.pop();
 
-            // Compare the names
             if (!top.equals(closing)) {
                 errorQueue.enqueue("Line " + lineNumber +
                         ": Tag mismatch. Expected </" + top + "> but found </" + closing + ">.");
@@ -113,7 +139,7 @@ public class XMLParser {
             return;
         }
 
-        // Opening tag <tag ...> (attributes must be ignored)
+        // Opening tag <tag ...>
         String tagName = extractTagName(tag);
         tagStack.push(tagName);
     }
@@ -123,6 +149,7 @@ public class XMLParser {
      * extract the tag name only.
      */
     private String extractTagName(String raw) {
+        if (raw == null) return null;
         int spaceIndex = raw.indexOf(' ');
         if (spaceIndex == -1) {
             return raw;
@@ -155,22 +182,19 @@ public class XMLParser {
             System.out.println(errorQueue.dequeue());
         }
     }
-    
+
     /**
      * Main method to run the XML parser from the command line.
-     * Usage: java application.XMLParser <xmlfile>
-     * 
-     * @param args Command line arguments - expects XML filename
      */
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Usage: java application.XMLParser <xmlfile>");
             return;
         }
-        
+
         XMLParser parser = new XMLParser();
         parser.parseFile(args[0]);
-        
+
         try {
             parser.printErrors();
         } catch (EmptyQueueException e) {
